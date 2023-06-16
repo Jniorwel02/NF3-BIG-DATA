@@ -1,0 +1,58 @@
+import pandas as pd
+import requests
+import matplotlib.pyplot as plot
+
+link = "https://raw.githubusercontent.com/Jniorwel02/NF3-BIG-DATA/main/world_alcohol.csv"
+df = pd.read_csv(link)
+df
+
+
+#1-A) 
+df['Beverage Types']
+
+#1-B)
+df['WHO region']
+df['Year']
+
+#1-C)
+tipos = df['WHO region'].value_counts()
+tipos
+
+tipos = df['Country'].value_counts()
+tipos
+
+soma = df['Display Value'].sum()
+soma
+
+tipos = df['Display Value'].value_counts()
+tipos
+
+tipos = df['Beverage Types'].value_counts()
+tipos
+
+
+#1-D)
+df['Display Value'].mean()
+
+
+df['Display Value'].median()
+
+
+df['Display Value'].mode()
+
+
+df['Display Value'].describe()
+
+
+result = df.groupby('Beverage Types')['Display Value'].mean()
+result.plot.bar(x='Beverage Types')
+plot.xlabel('Tipos de Bebidas')
+plot.ylabel('Valores de Bebidas')
+
+
+#1-E)
+result = df.loc[df['Year'] == 1985]
+result
+
+result = df.loc[df['WHO region']>'4']
+result
