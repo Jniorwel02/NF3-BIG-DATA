@@ -1,0 +1,83 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+url = 'https://raw.githubusercontent.com/Jniorwel02/NF3-BIG-DATA/main/cursos-prouni_trabalhoDeBigiData.csv'
+data = pd.read_csv(url)
+data
+
+
+#2-A)
+
+Nota = [
+    "nota_integral_ampla",
+    "nota_integral_cotas",
+    "nota_parcial_ampla",
+    "nota_parcial_cotas",
+]
+data[Nota] = data[Nota].fillna(0.0)
+data
+
+#2-B)
+data.groupby(["grau", "curso_busca"])["grau"].count()
+
+
+#2-C)
+#Agrupe os dados pelos cursos de 'Matemática', 'Medicina' , 'Pedagogia'
+
+grupo_cursos = data[data['curso_busca'].isin(['Matemática', 'Medicina' , 'Pedagogia'])]
+print(grupo_cursos)
+
+#2-D)
+# Agrupe os dados por Estado e obtenha a média de notas de corte por Estado uf_busca	nota_integral_ampla
+ValueCentral = data.groupby('uf_busca')['nota_integral_ampla'].median()
+ValueCentral
+
+#2-E)
+# Agrupe os dados pelos cursos Tecnológicos
+result = data.loc[data['grau'] == 'Tecnológico']
+result
+
+#2-F)
+# Elimine a coluna “cidade_filtro” do dataframe.
+
+Del = data.drop("cidade_filtro", axis=1)
+Del
+
+#2-G)
+# Apresente a média das mensalidades dos cursos de Medicina.
+
+Med = data[data["nome"] == "Medicina"]
+Div = Med["mensalidade"].mean()
+Div
+
+#2-H)
+# Média das notas de corte dos cursos de tempo integral.
+
+total = data[data["turno"] == "Integral"]
+corte_median = total["nota_integral_ampla"].mean()
+corte_median
+
+
+#2-I)
+# Estatística Descritiva das Notas Integral Ampla dos cursos de Bacharelado.
+
+facul = data[data["grau"] == "Bacharelado"]
+Est = facul["nota_integral_ampla"].describe()
+Est
+
+#2-J)
+# Gráfico comparativo entre o grau dos cursos (Bacharelado, Licenciatura, Tecnologia, etc)
+#pelas Notas Integral de Cotas.
+
+Tipos = ["grau", "nota_integral_cotas"]
+Filtro = data[Tipos]
+
+Grau = Filtro.groupby("grau")["nota_integral_cotas"].mean()
+
+fig, ax = plt.subplots()
+Grau.plot(kind="bar", ax=ax)
+
+ax.set_title("Notas de corte integral por curso")
+ax.set_xlabel("Tipos de Curso")
+ax.set_ylabel("Media das cotas")
+plt.show()
